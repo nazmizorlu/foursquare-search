@@ -1,0 +1,64 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: small
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1024px
+}
+
+.panel {
+    padding: 10px;
+}
+
+.top_panel {
+    width: 100%;
+    text-align: center;
+    background-color: #EFEFEF;
+    height: 100px;
+    padding-top: 30px;
+}
+
+.top_panel h3 {
+    margin-bottom: 20px;
+}
+
+.left_panel {
+    float: left;
+    width: 60%;
+}
+
+.right_panel {
+    float: right;
+    width: 25%
+}
+
+.form_container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form_element {
+    float: left;
+    width: 30%
+}
+
+.clearfix {
+    clear: both;
+}
+
+td {
+    text-align: center;
+}
+
+caption {
+    font-weight: bold;
+    font-size: large;
+    text-align: left;
+    padding-bottom: 20px;
+}

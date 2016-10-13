@@ -1,0 +1,93 @@
+{% load static i18n humanize %}<!DOCTYPE html>
+<html lang="{% get_current_language as language %}{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Foursquare Search" %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+</head>
+<body>
+    <div class="container">
+        <div class="panel top_panel">
+            <h3>{% trans "The ultimate Foursquare client" %}</h3>
+            <form method="get">
+                <div class="form_container clearfix">
+                    <div class="form_element">
+                        {{ form.phrase }}
+                    </div>
+                    <div class="form_element">
+                        {{ form.location }}
+                    </div>
+                    <div class="form_element">
+                        <input type="submit" value="Search">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="panel left_panel">
+            {% if results %}
+                <table border="1" width="100%">
+                    <caption>{% trans "Results" %}</caption>
+                    <thead>
+                        <tr>
+                            <th width="50%">{% trans "Name" %}</th>
+                            <th width="30%">{% trans "Phone Number" %}</th>
+                            <th width="20%">{% trans "Checkin Count" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for venue in results %}
+                            <tr>
+                                <td>{{ venue.name }}</td>
+                                <td>{{ venue.phone|default_if_none:"" }}</td>
+                                <td>{{ venue.checkins_count|intcomma }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" align="center">
+                                    {% trans "There is no place based on your criteria" %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="pagination">
+                                    <span class="step-links">
+                                        {% if results.has_previous %}
+                                            <a href="?page={{ results.previous_page_number }}&phrase={{ request.GET.phrase }}&location={{ request.GET.location }}">{% trans "Previous" %}</a>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            {% blocktrans with results.number as current_page_number and results.paginator.num_pages as total_pages_count %}
+                                                Page {{ current_page_number }} of {{ total_pages_count }}
+                                            {% endblocktrans %}
+                                        </span>
+
+                                        {% if results.has_next %}
+                                            <a href="?page={{ results.next_page_number }}&phrase={{ request.GET.phrase }}&location={{ request.GET.location }}">{% trans "Next" %}</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div class="panel right_panel">
+            {% if latest %}
+                <h3>{% trans "Latest Searches" %}</h3>
+                <ul>
+                    {% for search in latest %}
+                        <li>
+                            <a href="?phrase={{ search.phrase|urlencode }}&location={{ search.location|urlencode }}">
+                                {% blocktrans with search.phrase as phrase and search.location as location %}{{ phrase }} in {{ location }}{% endblocktrans %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
